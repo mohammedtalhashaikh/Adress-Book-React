@@ -1,0 +1,22 @@
+{
+    "personal":[
+        {
+            "name": "sample1",
+            "mobile": "1234567890",
+            "addrs": "a a a",
+            "city": "chennai",
+            "states": "Tamil Nadu",
+            "zip": "123456",
+            "type": "both"
+        },
+        {
+            "name": "sample",
+            "mobile": "1234567890",
+            "addrs": "a a a",
+            "city": "chennai",
+            "states": "Tamil Nadu",
+            "zip": "123456",
+            "type": "Present"
+          }
+    ]
+}
