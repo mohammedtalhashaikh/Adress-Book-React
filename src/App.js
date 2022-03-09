@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import "./App.css";
-import Form from "./component/Form";
 import Modal from "./component/modal";
 
 import {
@@ -60,24 +59,9 @@ class Home extends Component {
     this.handleBorder();
   };
 
-  onClose = () => {
-    //Write code for modal close
-    this.setState({ show: false });
-  };
-
-  handleChange = (e) => {
-    //write code to handle onchange event for input fields
-    this.setState({ [e.target.name]: e.target.value });
-  };
-
-  handleSave = (e) => {
-    //write code for saving data into personal or business
-  };
-
-  handleClear = (e) => {
-    //write code for clearing input fields
-    e.preventDefault();
+  cleanState = () => {
     this.setState({
+      checked: "",
       name: "",
       mobile: "",
       addrs: "",
@@ -85,7 +69,68 @@ class Home extends Component {
       states: "",
       type: "",
       zip: "",
+      name_error: "",
+      mobile_error: "",
+      addrs_error: "",
+      city_error: "",
+      states_error: "",
+      zip_error: "",
     });
+  };
+
+  onClose = () => {
+    //Write code for modal close
+    this.cleanState();
+    this.setState({ show: false });
+  };
+
+  handleChange = (e) => {
+    //write code to handle onchange event for input fields
+    this.setState({ [e.target.name]: e.target.value });
+    if (this.state.checked === "business") {
+      this.setState({ show_personal: false });
+    }
+  };
+
+  handleSave = (e) => {
+    const user = {
+      name: this.state.name,
+      mobile: this.state.mobile,
+      addrs: this.state.addrs,
+      city: this.state.city,
+      states: this.state.states,
+      type: this.state.type,
+      zip: this.state.zip,
+    };
+    //write code for saving data into personal or business
+    e.preventDefault();
+    // Creating object to push to storage
+
+    let { personal, business, checked, ...items } = this.state;
+
+    if (checked === "personal") {
+      //Adding the currrent user details to the personal state array
+      personal.push(user);
+
+      //pushing personal array to local storage
+      localStorage.setItem("personal", JSON.stringify(personal));
+    }
+
+    if (checked === "business") {
+      //Adding the current user details to business state array
+      business.push(user);
+
+      //pushing business array to local storage
+      localStorage.setItem("business", JSON.stringify(business));
+    }
+
+    // this.cleanState();
+  };
+
+  handleClear = (e) => {
+    //write code for clearing input fields
+    e.preventDefault();
+    this.cleanState();
   };
 
   handleBorder = () => {
@@ -104,19 +149,65 @@ class Home extends Component {
     });
   };
 
+  getData = () => {
+    let data = null;
+    if (this.state.show_personal) {
+      data = localStorage.getItem("personal");
+    } else {
+      data = localStorage.getItem("business");
+    }
+    return data ? JSON.parse(data) : null;
+  };
+
   render() {
     return (
       <div>
         {/*write your code here for displaying details*/}
-        <button className="add" onClick={() => this.setState({ show: true })}>
-          Add
-        </button>
+        <div>
+          <button className="add" onClick={() => this.setState({ show: true })}>
+            Add
+          </button>
+
+          <h1 className="App-header">Address Book</h1>
+          {console.log(this.getData())}
+
+          <table>
+            <tbody>
+              <tr>
+                <th>Personal</th>
+                <th>Business</th>
+              </tr>
+              <tr>
+                <td>Name</td>
+                <td>Mobile No</td>
+                <td>Address</td>
+                <td>City</td>
+                <td>State</td>
+                <td>Zip</td>
+                <td>Present/Permanent Address</td>
+              </tr>
+
+              {this.getData().map((row, index) => (
+                <tr key={index}>
+                  <td>{row.name}</td>
+                  <td>{row.mobile}</td>
+                  <td>{row.addrs}</td>
+                  <td>{row.city}</td>
+                  <td>{row.states}</td>
+                  <td>{row.zip}</td>
+                  <td>{row.type}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
         <div className={this.state.show ? "bg" : ""}>
           <Modal>
             {this.state.show && (
               <>
                 <div className="pop">
-                  <form>
+                  <form onSubmit={this.handleSave}>
                     <h3>Fill Address Details</h3>
                     <button className="close" onClick={this.onClose}>
                       x
@@ -144,7 +235,7 @@ class Home extends Component {
                       <label htmlFor="business">Business</label>
                     </div>
 
-                    {this.state.checked != "" ? (
+                    {this.state.checked !== "" ? (
                       <div>
                         <div className="fields">
                           <label htmlFor="name">Name</label>
@@ -228,7 +319,11 @@ class Home extends Component {
                         </div>
 
                         <div className="btns fields">
-                          <button className="save" disabled={false}>
+                          <button
+                            className="save"
+                            disabled={false}
+                            onClick={this.handleSave}
+                          >
                             Save
                           </button>
                           <button className="clear" onClick={this.handleClear}>
