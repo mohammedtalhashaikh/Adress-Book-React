@@ -152,11 +152,21 @@ class Home extends Component {
   getData = () => {
     let data = null;
     if (this.state.show_personal) {
-      data = localStorage.getItem("personal");
+      // data = localStorage.getItem("personal");
+      data = this.state.personal;
     } else {
-      data = localStorage.getItem("business");
+      // data = localStorage.getItem("business");
+      data = this.state.business;
     }
-    return data ? JSON.parse(data) : null;
+    return data;
+  };
+
+  handleDisplay = (e) => {
+    if (e.target.name === "business") {
+      this.setState({ show_personal: false });
+    } else {
+      this.setState({ show_personal: true });
+    }
   };
 
   render() {
@@ -174,8 +184,20 @@ class Home extends Component {
           <table>
             <tbody>
               <tr>
-                <th>Personal</th>
-                <th>Business</th>
+                <button
+                  name="personal"
+                  onClick={this.handleDisplay}
+                  className="btns"
+                >
+                  Personal
+                </button>
+                <button
+                  name="business"
+                  onClick={this.handleDisplay}
+                  className="btns"
+                >
+                  Business
+                </button>
               </tr>
               <tr>
                 <td>Name</td>
@@ -296,24 +318,30 @@ class Home extends Component {
                           <input
                             type="radio"
                             id="present"
-                            name="addressType"
-                            value={this.state.type}
+                            name="type"
+                            value="present"
+                            checked={this.state.type === "present"}
+                            onChange={this.handleChange}
                           ></input>
                           <label htmlFor="present">Present</label>
 
                           <input
                             type="radio"
                             id="permanent"
-                            name="addressType"
-                            value={this.state.type}
+                            name="type"
+                            value="permanent"
+                            checked={this.state.type === "permanent"}
+                            onChange={this.handleChange}
                           ></input>
                           <label htmlFor="permanent">Permanent</label>
 
                           <input
                             type="radio"
                             id="both"
-                            name="addressType"
-                            value={this.state.type}
+                            name="type"
+                            value="both"
+                            checked={this.state.type === "both"}
+                            onChange={this.handleChange}
                           ></input>
                           <label htmlFor="both">Both</label>
                         </div>
