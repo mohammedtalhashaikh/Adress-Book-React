@@ -33,7 +33,7 @@ export const validateAddress = (addrs) => {
   if (addrs === "") {
     error_msg = "Please enter a value";
   } else if (!pattern) {
-    error_msg = "Address should have a lenght of atleast 3 words";
+    error_msg = "Address should have a length of atleast 3 words";
   } else {
     error_msg = "";
   }

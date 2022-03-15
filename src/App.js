@@ -50,7 +50,7 @@ class Home extends Component {
         city: "chennai",
         states: "Tamil Nadu",
         zip: "123456",
-        type: "Present",
+        type: "Both",
       },
     ],
   };
@@ -87,9 +87,14 @@ class Home extends Component {
 
   handleChange = (e) => {
     //write code to handle onchange event for input fields
-
+    this.validate();
     this.setState({
       [e.target.name]: e.target.value,
+    });
+    this.handleError();
+  };
+  handleError = () => {
+    this.setState({
       name_error: validateName(this.state.name),
       mobile_error: validateMobile(this.state.mobile),
       addrs_error: validateAddress(this.state.addrs),
@@ -110,33 +115,22 @@ class Home extends Component {
       zip: this.state.zip,
     };
     //write code for saving data into personal or business
-    e.preventDefault();
     // Creating object to push to storage
 
-    let { personal, business, checked, ...items } = this.state;
-
-    if (checked === "personal") {
-      //Adding the currrent user details to the personal state array
+    let { personal, business, checked } = this.state;
+    if (checked === "Personal") {
       personal.push(user);
-
-      //pushing personal array to local storage
-      localStorage.setItem("personal", JSON.stringify(personal));
+      this.setState({ show: false, show_personal: true });
     }
-
-    if (checked === "business") {
-      //Adding the current user details to business state array
+    if (checked === "Business") {
       business.push(user);
-
-      //pushing business array to local storage
-      localStorage.setItem("business", JSON.stringify(business));
     }
-    this.setState({ show: false });
+    this.setState({ show: false, show_personal: checked === "Personal" });
     this.cleanState();
   };
 
   handleClear = (e) => {
     //write code for clearing input fields
-    e.preventDefault();
     this.cleanState();
   };
 
@@ -160,19 +154,10 @@ class Home extends Component {
     let data = null;
     if (this.state.show_personal) {
       // data = localStorage.getItem("personal");
-      data = this.state.personal;
+      return this.state.personal;
     } else {
       // data = localStorage.getItem("business");
-      data = this.state.business;
-    }
-    return data;
-  };
-
-  handleDisplay = (e) => {
-    if (e.target.name === "business") {
-      this.setState({ show_personal: false });
-    } else {
-      this.setState({ show_personal: true });
+      return this.state.business;
     }
   };
 
@@ -198,41 +183,38 @@ class Home extends Component {
     return (
       <div>
         {/*write your code here for displaying details*/}
-        <div>
+        <div className="App">
           <button className="add" onClick={() => this.setState({ show: true })}>
             Add
           </button>
 
-          <h1 className="App-header">Address Book</h1>
+          <h2 className="App-header">Adress Book</h2>
 
           <table>
             <tbody>
-              <tr>
+              <tr className="buttons">
                 <th
-                  name="personal"
-                  onClick={this.handleDisplay}
-                  className="buttons"
+                  name="Personal"
+                  onClick={() => this.setState({ show_personal: true })}
                 >
                   Personal
                 </th>
                 <th
-                  name="business"
-                  onClick={this.handleDisplay}
-                  className="buttons"
+                  name="Business"
+                  onClick={() => this.setState({ show_personal: false })}
                 >
                   Business
                 </th>
               </tr>
               <tr>
                 <td>Name</td>
-                <td>Mobile No</td>
+                <td>Mobile No.</td>
                 <td>Address</td>
                 <td>City</td>
                 <td>State</td>
                 <td>Zip</td>
                 <td>Present/Permanent Address</td>
               </tr>
-
               {this.getData().map((row, index) => (
                 <tr key={index}>
                   <td>{row.name}</td>
@@ -259,26 +241,26 @@ class Home extends Component {
                       x
                     </button>
 
-                    <div className="radios">
+                    <div className="radio">
                       <input
                         type="radio"
-                        id="personal"
+                        id="Personal"
                         name="checked"
-                        value="personal"
-                        checked={this.state.checked === "personal"}
+                        value="Personal"
+                        checked={this.state.checked === "Personal"}
                         onChange={this.handleChange}
                       />
-                      <label htmlFor="personal">Personal</label>
+                      <label htmlFor="Personal">Personal</label>
 
                       <input
                         type="radio"
-                        id="business"
+                        id="Business"
                         name="checked"
-                        value="business"
-                        checked={this.state.checked === "business"}
+                        value="Business"
+                        checked={this.state.checked === "Business"}
                         onChange={this.handleChange}
                       />
-                      <label htmlFor="business">Business</label>
+                      <label htmlFor="Business">Business</label>
                     </div>
 
                     {this.state.checked !== "" ? (
@@ -294,7 +276,7 @@ class Home extends Component {
                           />
                           <span>{validateName(this.state.name)}</span>
 
-                          <label htmlFor="mobile">Mobile No</label>
+                          <label htmlFor="mobile">Mobile No.</label>
                           <input
                             type="text"
                             id="mobile"
@@ -347,33 +329,33 @@ class Home extends Component {
                         <div className="radios">
                           <input
                             type="radio"
-                            id="present"
+                            id="Present"
                             name="type"
-                            value="present"
-                            checked={this.state.type === "present"}
+                            value="Present"
+                            checked={this.state.type === "Present"}
                             onChange={this.handleChange}
                           ></input>
-                          <label htmlFor="present">Present</label>
+                          <label htmlFor="Present">Present</label>
 
                           <input
                             type="radio"
-                            id="permanent"
+                            id="Permanent"
                             name="type"
-                            value="permanent"
-                            checked={this.state.type === "permanent"}
+                            value="Permanent"
+                            checked={this.state.type === "Permanent"}
                             onChange={this.handleChange}
                           ></input>
-                          <label htmlFor="permanent">Permanent</label>
+                          <label htmlFor="Permanent">Permanent</label>
 
                           <input
                             type="radio"
-                            id="both"
+                            id="Both"
                             name="type"
-                            value="both"
-                            checked={this.state.type === "both"}
+                            value="Both"
+                            checked={this.state.type === "Both"}
                             onChange={this.handleChange}
                           ></input>
-                          <label htmlFor="both">Both</label>
+                          <label htmlFor="Both">Both</label>
                         </div>
 
                         <div className="btns fields">

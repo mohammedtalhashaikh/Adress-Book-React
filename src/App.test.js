@@ -179,7 +179,7 @@ describe("App component", () => {
         .find("td")
         .at(0)
         .text()
-    ).toBe("Cool");
+    ).toBe("cool");
 
     expect(
       component
@@ -212,7 +212,7 @@ describe("App component", () => {
         .find("td")
         .at(3)
         .text()
-    ).toBe("Chennai");
+    ).toBe("chennai");
 
     expect(
       component
@@ -411,21 +411,21 @@ describe("App component", () => {
       .find(".radios")
       .find("input")
       .at(0)
-      .simulate("change", { target: { name: "checked", value: "Present" } });
+      .simulate("change", { target: { name: "type", value: "Present" } });
     expect(component.state().type).toBe("Present");
 
     component
       .find(".radios")
       .find("input")
       .at(1)
-      .simulate("change", { target: { name: "checked", value: "Permanent" } });
+      .simulate("change", { target: { name: "type", value: "Permanent" } });
     expect(component.state().type).toBe("Permanent");
 
     component
       .find(".radios")
       .find("input")
       .at(2)
-      .simulate("change", { target: { name: "checked", value: "Both" } });
+      .simulate("change", { target: { name: "type", value: "Both" } });
     expect(component.state().type).toBe("Both");
 
     //validation check
@@ -532,7 +532,7 @@ describe("App component", () => {
       .find(".fields")
       .find("input")
       .at(4)
-      .simulate("change", { target: { name: "zip", value: "" } });
+      .simulate("change", { target: { name: "zip", value: "123456789" } });
     expect(component.state().zip_error).toBe(
       "Please enter a valid 6 digit zip pin"
     );
