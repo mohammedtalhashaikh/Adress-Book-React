@@ -81,17 +81,15 @@ class Home extends Component {
 
   onClose = () => {
     //Write code for modal close
-    this.cleanState();
     this.setState({ show: false });
+    this.cleanState();
   };
 
   handleChange = (e) => {
     //write code to handle onchange event for input fields
 
-    this.setState((prevState) => ({
-      [e.target.name]: e.target.value,
-    }));
     this.setState({
+      [e.target.name]: e.target.value,
       name_error: validateName(this.state.name),
       mobile_error: validateMobile(this.state.mobile),
       addrs_error: validateAddress(this.state.addrs),
@@ -99,11 +97,6 @@ class Home extends Component {
       states_error: validateStates(this.state.states),
       zip_error: validateZip(this.state.zip),
     });
-    console.log(this.validate());
-
-    // this.setState(() => ({
-    //   name_error: validateName(this.state.name),
-    // }));
   };
 
   handleSave = (e) => {
@@ -137,8 +130,8 @@ class Home extends Component {
       //pushing business array to local storage
       localStorage.setItem("business", JSON.stringify(business));
     }
-
-    // this.cleanState();
+    this.setState({ show: false });
+    this.cleanState();
   };
 
   handleClear = (e) => {
@@ -184,20 +177,7 @@ class Home extends Component {
   };
 
   validate() {
-    const {
-      name,
-      mobile,
-      addrs,
-      city,
-      states,
-      zip,
-      name_error,
-      mobile_error,
-      addrs_error,
-      city_error,
-      states_error,
-      zip_error,
-    } = this.state;
+    const { name, mobile, addrs, city, states, zip, type } = this.state;
 
     if (
       validateName(name) === "" &&
@@ -205,10 +185,12 @@ class Home extends Component {
       validateAddress(addrs) === "" &&
       validateCity(city) === "" &&
       validateStates(states) === "" &&
-      validateZip(zip) === ""
+      validateZip(zip) === "" &&
+      type !== ""
     ) {
       return true;
     }
+
     return false;
   }
 
@@ -272,7 +254,7 @@ class Home extends Component {
               <>
                 <div className="pop">
                   <form onSubmit={this.handleSave}>
-                    <h3>Fill Address Details</h3>
+                    <h3>Fill adress Details</h3>
                     <button className="close" onClick={this.onClose}>
                       x
                     </button>
