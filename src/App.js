@@ -57,6 +57,7 @@ class Home extends Component {
 
   componentDidMount = () => {
     this.handleBorder();
+    this.validate();
   };
 
   cleanState = () => {
@@ -86,10 +87,23 @@ class Home extends Component {
 
   handleChange = (e) => {
     //write code to handle onchange event for input fields
-    this.setState({ [e.target.name]: e.target.value });
-    if (this.state.checked === "business") {
-      this.setState({ show_personal: false });
-    }
+
+    this.setState((prevState) => ({
+      [e.target.name]: e.target.value,
+    }));
+    this.setState({
+      name_error: validateName(this.state.name),
+      mobile_error: validateMobile(this.state.mobile),
+      addrs_error: validateAddress(this.state.addrs),
+      city_error: validateCity(this.state.city),
+      states_error: validateStates(this.state.states),
+      zip_error: validateZip(this.state.zip),
+    });
+    console.log(this.validate());
+
+    // this.setState(() => ({
+    //   name_error: validateName(this.state.name),
+    // }));
   };
 
   handleSave = (e) => {
@@ -169,6 +183,35 @@ class Home extends Component {
     }
   };
 
+  validate() {
+    const {
+      name,
+      mobile,
+      addrs,
+      city,
+      states,
+      zip,
+      name_error,
+      mobile_error,
+      addrs_error,
+      city_error,
+      states_error,
+      zip_error,
+    } = this.state;
+
+    if (
+      validateName(name) === "" &&
+      validateMobile(mobile) === "" &&
+      validateAddress(addrs) === "" &&
+      validateCity(city) === "" &&
+      validateStates(states) === "" &&
+      validateZip(zip) === ""
+    ) {
+      return true;
+    }
+    return false;
+  }
+
   render() {
     return (
       <div>
@@ -179,25 +222,24 @@ class Home extends Component {
           </button>
 
           <h1 className="App-header">Address Book</h1>
-          {console.log(this.getData())}
 
           <table>
             <tbody>
               <tr>
-                <button
+                <th
                   name="personal"
                   onClick={this.handleDisplay}
-                  className="btns"
+                  className="buttons"
                 >
                   Personal
-                </button>
-                <button
+                </th>
+                <th
                   name="business"
                   onClick={this.handleDisplay}
-                  className="btns"
+                  className="buttons"
                 >
                   Business
-                </button>
+                </th>
               </tr>
               <tr>
                 <td>Name</td>
@@ -268,6 +310,7 @@ class Home extends Component {
                             value={this.state.name}
                             onChange={this.handleChange}
                           />
+                          <span>{validateName(this.state.name)}</span>
 
                           <label htmlFor="mobile">Mobile No</label>
                           <input
@@ -277,6 +320,7 @@ class Home extends Component {
                             value={this.state.mobile}
                             onChange={this.handleChange}
                           />
+                          <span>{validateMobile(this.state.mobile)}</span>
 
                           <label htmlFor="addrs">Address</label>
                           <textarea
@@ -285,6 +329,7 @@ class Home extends Component {
                             name="addrs"
                             value={this.state.addrs}
                           />
+                          <span>{validateAddress(this.state.addrs)}</span>
 
                           <label htmlFor="city">City</label>
                           <input
@@ -294,6 +339,7 @@ class Home extends Component {
                             onChange={this.handleChange}
                             value={this.state.city}
                           />
+                          <span>{validateCity(this.state.city)}</span>
 
                           <label htmlFor="name">State</label>
                           <input
@@ -303,6 +349,7 @@ class Home extends Component {
                             onChange={this.handleChange}
                             value={this.state.states}
                           />
+                          <span>{validateStates(this.state.states)}</span>
 
                           <label htmlFor="zip">Postal Code/Zip Code</label>
                           <input
@@ -312,6 +359,7 @@ class Home extends Component {
                             onChange={this.handleChange}
                             value={this.state.zip}
                           />
+                          <span>{validateZip(this.state.zip)}</span>
                         </div>
 
                         <div className="radios">
@@ -349,7 +397,7 @@ class Home extends Component {
                         <div className="btns fields">
                           <button
                             className="save"
-                            disabled={false}
+                            disabled={!this.validate()}
                             onClick={this.handleSave}
                           >
                             Save
