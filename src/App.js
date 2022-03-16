@@ -94,30 +94,40 @@ class Home extends Component {
     this.handleError();
   };
   handleError = () => {
+    const { name, mobile, addrs, city, states, zip } = this.state;
     this.setState({
-      name_error: validateName(this.state.name),
-      mobile_error: validateMobile(this.state.mobile),
-      addrs_error: validateAddress(this.state.addrs),
-      city_error: validateCity(this.state.city),
-      states_error: validateStates(this.state.states),
-      zip_error: validateZip(this.state.zip),
+      name_error: validateName(name),
+      mobile_error: validateMobile(mobile),
+      addrs_error: validateAddress(addrs),
+      city_error: validateCity(city),
+      states_error: validateStates(states),
+      zip_error: validateZip(zip),
     });
   };
 
-  handleSave = (e) => {
+  handleSave = () => {
+    let {
+      name,
+      mobile,
+      addrs,
+      city,
+      states,
+      type,
+      zip,
+      personal,
+      business,
+      checked,
+    } = this.state;
     const user = {
-      name: this.state.name,
-      mobile: this.state.mobile,
-      addrs: this.state.addrs,
-      city: this.state.city,
-      states: this.state.states,
-      type: this.state.type,
-      zip: this.state.zip,
+      name,
+      mobile,
+      addrs,
+      city,
+      states,
+      type,
+      zip,
     };
-    //write code for saving data into personal or business
-    // Creating object to push to storage
 
-    let { personal, business, checked } = this.state;
     if (checked === "Personal") {
       personal.push(user);
       this.setState({ show: false, show_personal: true });
@@ -262,7 +272,7 @@ class Home extends Component {
                       <label htmlFor="Business">Business</label>
                     </div>
 
-                    {this.state.checked !== "" ? (
+                    {this.state.checked !== "" && (
                       <div>
                         <div className="fields">
                           <label htmlFor="name">Name</label>
@@ -370,7 +380,7 @@ class Home extends Component {
                           </button>
                         </div>
                       </div>
-                    ) : null}
+                    )}
                   </form>
                 </div>
               </>
