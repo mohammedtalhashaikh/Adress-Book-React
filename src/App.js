@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
 import Modal from "./component/modal";
-import { TableRows } from "./component/TableRows";
 
 import {
   validateName,
@@ -152,13 +151,6 @@ class Home extends Component {
   };
 
   getData = () => {
-    // if (this.state.show_personal) {
-    //   // data = localStorage.getItem("personal");
-    //   return this.state.personal.map((x) => x);
-    // } else {
-    //   // data = localStorage.getItem("business");
-    //   return this.state.business.map((x) => x);
-    // }
     return this.state.show_personal ? this.state.personal : this.state.business;
   };
 
@@ -233,28 +225,6 @@ class Home extends Component {
               ) : (
                 <h3>No business records to display</h3>
               )}
-              {/* {this.state.show_personal && this.state.personal.length > 0 ? (
-                this.state.personal.map((row, index) => (
-                  <tr key={index}>
-                    <td>{row.name}</td>
-                    <td>{row.mobile}</td>
-                    <td>{row.addrs}</td>
-                    <td>{row.city}</td>
-                    <td>{row.states}</td>
-                    <td>{row.zip}</td>
-                    <td>{row.type}</td>
-                  </tr>
-                ))
-              ) : (
-                <h3>No personal recordesfound</h3>
-              )} */}
-              {/* <TableRows
-                data={
-                  this.state.show_personal
-                    ? this.state.personal
-                    : this.state.business
-                }
-              /> */}
             </tbody>
           </table>
         </div>
