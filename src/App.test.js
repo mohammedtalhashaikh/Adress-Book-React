@@ -264,7 +264,7 @@ describe("App component", () => {
         .find("td")
         .at(0)
         .text()
-    ).toBe("Sample");
+    ).toBe("sample");
 
     expect(
       component
@@ -297,7 +297,7 @@ describe("App component", () => {
         .find("td")
         .at(3)
         .text()
-    ).toBe("Chennai");
+    ).toBe("chennai");
 
     expect(
       component
@@ -334,7 +334,7 @@ describe("App component", () => {
 
     component.instance().setState({ personal: [] });
     expect(component.find("table").find("tbody").find("h3").text()).toBe(
-      "No personal recordes to dislay"
+      "No personal records to display"
     );
   });
 
